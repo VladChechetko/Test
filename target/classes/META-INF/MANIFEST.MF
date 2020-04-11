@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Built-By: ￐ﾒ￐ﾻ￐ﾰ￐ﾴ￐ﾸ￑ﾁ￐ﾻ￐ﾰ￐ﾲ
+Class-Path: spring-context-5.2.5.RELEASE.jar spring-aop-5.2.5.RELEASE.
+ jar spring-beans-5.2.5.RELEASE.jar spring-core-5.2.5.RELEASE.jar spri
+ ng-jcl-5.2.5.RELEASE.jar spring-expression-5.2.5.RELEASE.jar
+Build-Jdk: 1.8.0_131
+Created-By: Maven Integration for Eclipse
+Main-Class: ru.volnenko.se.App
+
