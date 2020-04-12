@@ -1,10 +1,13 @@
 package ru.volnenko.se.command.system;
 
+import org.springframework.stereotype.Component;
+
 import ru.volnenko.se.command.AbstractCommand;
 
 /**
  * @author Denis Volnenko
  */
+@Component("help")
 public final class HelpCommand extends AbstractCommand {
 
     @Override

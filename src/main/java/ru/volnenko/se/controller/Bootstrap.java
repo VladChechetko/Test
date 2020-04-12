@@ -38,6 +38,7 @@ public final class Bootstrap implements ServiceLocator, CommandProvider {
 	@Autowired
     private ITaskService taskService;
 
+	@Autowired
     private final Map<String, AbstractCommand> commands = new LinkedHashMap<>();
 
     @Autowired
@@ -63,33 +64,7 @@ public final class Bootstrap implements ServiceLocator, CommandProvider {
         return terminalService;
     }
 
-    public void registry(final AbstractCommand command) {
-        final String cliCommand = command.command();
-        final String cliDescription = command.description();
-        if (cliCommand == null || cliCommand.isEmpty()) throw new CommandCorruptException();
-        if (cliDescription == null || cliDescription.isEmpty()) throw new CommandCorruptException();
-        command.setServiceLocator(this);
-        commands.put(cliCommand, command);
-    }
-
-    public void registry(final Class... classes) throws InstantiationException, IllegalAccessException {
-        for (final Class clazz : classes) registry(clazz);
-    }
-
-    public void registry(final Class clazz) throws IllegalAccessException, InstantiationException {
-        if (!AbstractCommand.class.isAssignableFrom(clazz)) return;
-        final Object command = clazz.newInstance();
-        final AbstractCommand abstractCommand = (AbstractCommand) command;
-        registry(abstractCommand);
-    }
-
-    public void init(final Class... classes) throws Exception {
-        if (classes == null || classes.length == 0) throw new CommandAbsentException();
-        registry(classes);
-        start();
-    }
-
-    private void start() throws Exception {
+    public void start() throws Exception {
         System.out.println("*** WELCOME TO TASK MANAGER ***");
         String command = "";
         while (!"exit".equals(command)) {

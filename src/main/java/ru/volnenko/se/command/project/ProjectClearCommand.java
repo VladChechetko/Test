@@ -1,10 +1,13 @@
 package ru.volnenko.se.command.project;
 
+import org.springframework.stereotype.Component;
+
 import ru.volnenko.se.command.AbstractCommand;
 
 /**
  * @author Denis Volnenko
  */
+@Component("project-clear")
 public final class ProjectClearCommand extends AbstractCommand {
 
     @Override

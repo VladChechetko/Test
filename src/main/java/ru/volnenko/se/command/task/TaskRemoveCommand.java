@@ -1,10 +1,13 @@
 package ru.volnenko.se.command.task;
 
+import org.springframework.stereotype.Component;
+
 import ru.volnenko.se.command.AbstractCommand;
 
 /**
  * @author Denis Volnenko
  */
+@Component("task-remove")
 public final class TaskRemoveCommand extends AbstractCommand {
 
     @Override

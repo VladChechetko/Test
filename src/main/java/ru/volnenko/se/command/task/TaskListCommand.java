@@ -1,11 +1,14 @@
 package ru.volnenko.se.command.task;
 
+import org.springframework.stereotype.Component;
+
 import ru.volnenko.se.command.AbstractCommand;
 import ru.volnenko.se.entity.Task;
 
 /**
  * @author Denis Volnenko
  */
+@Component("task-list")
 public final class TaskListCommand extends AbstractCommand {
 
     @Override
