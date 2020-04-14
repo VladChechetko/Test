@@ -1,15 +1,20 @@
 package ru.volnenko.se.command.project;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import ru.volnenko.se.command.AbstractCommand;
 import ru.volnenko.se.entity.Project;
+import ru.volnenko.se.service.ProjectService;
 
 /**
  * @author Denis Volnenko
  */
 @Component("project-list")
-public final class ProjectListCommand extends AbstractCommand {
+public class ProjectListCommand extends AbstractCommand {
+
+	@Autowired
+	private ProjectService projectService;
 
     @Override
     public String command() {
@@ -24,9 +29,8 @@ public final class ProjectListCommand extends AbstractCommand {
     @Override
     public void execute() {
         System.out.println("[PROJECT LIST]");
-        int index = 1;
-        for (Project project: serviceLocator.getProjectService().getListProject()) {
-            System.out.println(index++ + ". " + project.getName());
+        for (Project project: projectService.getListProject()) {
+            System.out.println(project.getId() + ". " + project.getName());
         }
         System.out.println();
     }

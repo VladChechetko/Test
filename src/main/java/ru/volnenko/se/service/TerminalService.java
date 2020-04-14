@@ -1,27 +1,24 @@
 package ru.volnenko.se.service;
 
-import ru.volnenko.se.api.service.CommandProvider;
-import ru.volnenko.se.api.service.ITerminalService;
-import ru.volnenko.se.command.AbstractCommand;
-
 import java.util.List;
 import java.util.Scanner;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import ru.volnenko.se.api.service.CommandProvider;
+import ru.volnenko.se.command.AbstractCommand;
 
 /**
  * @author Denis Volnenko
  */
 @Component
-public final class TerminalService implements ITerminalService {
+public class TerminalService {
 
     private final Scanner scanner = new Scanner(System.in);
 
-    private final CommandProvider commandProvider;
-
-    public TerminalService(CommandProvider commandProvider) {
-        this.commandProvider = commandProvider;
-    }
+    @Autowired
+    private CommandProvider commandProvider;
 
     public String nextLine() {
         return scanner.nextLine();
@@ -37,7 +34,6 @@ public final class TerminalService implements ITerminalService {
         }
     }
 
-    @Override
     public List<AbstractCommand> getCommands() {
         return commandProvider.getCommands();
     }

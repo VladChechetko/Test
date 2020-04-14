@@ -1,15 +1,20 @@
 package ru.volnenko.se.command.project;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import ru.volnenko.se.command.AbstractCommand;
+import ru.volnenko.se.service.ProjectService;
 
 /**
  * @author Denis Volnenko
  */
 @Component("project-clear")
-public final class ProjectClearCommand extends AbstractCommand {
+public class ProjectClearCommand extends AbstractCommand {
 
+	@Autowired
+	private ProjectService projectService;
+	
     @Override
     public String command() {
         return "project-clear";
@@ -22,7 +27,7 @@ public final class ProjectClearCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        serviceLocator.getProjectService().clear();
+        projectService.clear();
         System.out.println("[ALL PROJECTS REMOVED]");
     }
 

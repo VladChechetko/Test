@@ -1,86 +1,93 @@
 package ru.volnenko.se.service;
 
-import ru.volnenko.se.api.repository.IProjectRepository;
-import ru.volnenko.se.entity.Project;
-import ru.volnenko.se.repository.ProjectRepository;
-
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import ru.volnenko.se.entity.Project;
+import ru.volnenko.se.repository.ProjectRepository;
 
 /**
  * @author Denis Volnenko
  */
-@Component
-public final class ProjectService implements ru.volnenko.se.api.service.IProjectService {
+@Service
+public class ProjectService {
 
-    private final IProjectRepository projectRepository;
+	@Autowired
+    private ProjectRepository projectRepository;
 
-    public ProjectService(final IProjectRepository projectRepository) {
-        this.projectRepository = projectRepository;
-    }
-
-    @Override
+	@Transactional
     public Project createProject(final String name) {
         if (name == null || name.isEmpty()) return null;
-        return projectRepository.createProject(name);
+        Project p = new Project();
+        p.setName(name);
+        return projectRepository.save(p);
     }
 
-    @Override
+	@Transactional
     public Project merge(final Project project) {
         if (project == null) return null;
-        return projectRepository.merge(project);
+        return projectRepository.save(project);
     }
 
+	@Transactional
     public void merge(Collection<Project> projects) {
-        projectRepository.merge(projects);
+    	for (Project p : projects) {
+    		projectRepository.save(p);
+    	}
     }
 
-    @Override
     public Project getProjectById(final String id) {
         if (id == null || id.isEmpty()) return null;
-        return projectRepository.getProjectById(id);
+        return projectRepository.getOne(Long.valueOf(id));
     }
 
-    @Override
+    @Transactional
     public void removeProjectById(final String id) {
         if (id == null || id.isEmpty()) return;
-        projectRepository.removeProjectById(id);
+        projectRepository.deleteById(Long.valueOf(id));
     }
 
-    @Override
     public List<Project> getListProject() {
-        return projectRepository.getListProject();
+        return projectRepository.findAll();
     }
 
-    @Override
+    @Transactional
     public void clear() {
-        projectRepository.clear();
+        projectRepository.deleteAll();
     }
 
-    @Override
+    @Transactional
     public void merge(final Project... projects) {
         if (projects == null || projects.length == 0) return;
-        projectRepository.merge(projects);
+    	for (Project p : projects) {
+    		projectRepository.save(p);
+    	}
     }
 
-    @Override
+    @Transactional
     public void load(Collection<Project> projects) {
         if (projects == null) return;
-        projectRepository.load(projects);
+    	for (Project p : projects) {
+    		projectRepository.save(p);
+    	}
     }
 
-    @Override
+    @Transactional
     public void load(final Project... projects) {
         if (projects == null) return;
-        projectRepository.load(projects);
+    	for (Project p : projects) {
+    		projectRepository.save(p);
+    	}
     }
 
-    @Override
-    public Project removeByOrderIndex(Integer orderIndex) {
-        if (orderIndex == null) return null;
-        return projectRepository.removeByOrderIndex(orderIndex);
+    @Transactional
+    public void removeByOrderIndex(Long orderIndex) {
+        if (orderIndex == null) return;
+        projectRepository.deleteById(orderIndex);
     }
 
 }

@@ -2,27 +2,38 @@ package ru.volnenko.se.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.UUID;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  * @author Denis Volnenko
  */
+@Entity
+public class Project implements Serializable {
 
-public final class Project implements Serializable {
-
-    private String id = UUID.randomUUID().toString();
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     private String name = "";
 
     private Date dateBegin;
 
     private Date dateEnd;
+    
+    @OneToMany(mappedBy = "project")
+    private List<Task> taskList;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -49,5 +60,15 @@ public final class Project implements Serializable {
     public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
     }
+
+	public List<Task> getTaskList() {
+		return taskList;
+	}
+
+	public void setTaskList(List<Task> taskList) {
+		this.taskList = taskList;
+	}
+    
+    
 
 }

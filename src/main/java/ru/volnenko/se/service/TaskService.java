@@ -1,97 +1,98 @@
 package ru.volnenko.se.service;
 
-import ru.volnenko.se.api.repository.IProjectRepository;
-import ru.volnenko.se.api.repository.ITaskRepository;
-import ru.volnenko.se.api.service.ITaskService;
-import ru.volnenko.se.entity.Project;
-import ru.volnenko.se.entity.Task;
-
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import ru.volnenko.se.entity.Project;
+import ru.volnenko.se.entity.Task;
+import ru.volnenko.se.repository.ProjectRepository;
+import ru.volnenko.se.repository.TaskRepository;
 
 /**
  * @author Denis Volnenko
  */
-@Component
-public final class TaskService implements ITaskService {
+@Service
+public class TaskService {
 
-    private final ITaskRepository taskRepository;
+	@Autowired
+    private TaskRepository taskRepository;
 
-    private final IProjectRepository projectRepository;
+	@Autowired
+    private ProjectRepository projectRepository;
 
-    public TaskService(
-            final ITaskRepository taskRepository,
-            final IProjectRepository projectRepository
-    ) {
-        this.taskRepository = taskRepository;
-        this.projectRepository = projectRepository;
-    }
-
-    @Override
+	@Transactional
     public Task createTask(final String name) {
         if (name == null || name.isEmpty()) return null;
-        return taskRepository.createTask(name);
+        Task t = new Task();
+        t.setName(name);
+        return taskRepository.save(t);
     }
 
-    @Override
     public Task getTaskById(final String id) {
-        return taskRepository.getTaskById(id);
+        return taskRepository.getOne(Long.valueOf(id));
     }
 
-    @Override
+    @Transactional
     public Task merge(final Task task) {
-        return taskRepository.merge(task);
+        return taskRepository.save(task);
     }
 
-    @Override
+    @Transactional
     public void removeTaskById(final String id) {
-        taskRepository.removeTaskById(id);
+        taskRepository.deleteById(Long.valueOf(id));
     }
 
-    @Override
     public List<Task> getListTask() {
-        return taskRepository.getListTask();
+        return taskRepository.findAll();
     }
 
-    @Override
+    @Transactional
     public void clear() {
-        taskRepository.clear();
+        taskRepository.deleteAll();
     }
 
-    @Override
+    @Transactional
     public Task createTaskByProject(final String projectId, final String taskName) {
-        final Project project = projectRepository.getProjectById(projectId);
+        Project project = projectRepository.getOne(Long.valueOf(projectId));
         if (project == null) return null;
-        final Task task = taskRepository.createTask(taskName);
-        task.setProjectId(project.getId());
-        return task;
+        Task t = new Task();
+        t.setName(taskName);
+        t.setProject(project);
+        return taskRepository.save(t);
     }
 
-    @Override
-    public Task getByOrderIndex(Integer orderIndex) {
-        return taskRepository.getByOrderIndex(orderIndex);
+    public Task getByOrderIndex(Long id) {
+    	return taskRepository.getOne(id);
     }
 
-    @Override
+    @Transactional
     public void merge(Task... tasks) {
-        taskRepository.merge(tasks);
+    	for (Task t : tasks) {
+    		taskRepository.save(t);
+    	}
     }
 
-    @Override
+    @Transactional
     public void load(Task... tasks) {
-        taskRepository.load(tasks);
+    	for (Task t : tasks) {
+    		taskRepository.save(t);
+    	}
     }
 
-    @Override
+    @Transactional
     public void load(Collection<Task> tasks) {
-        taskRepository.load(tasks);
+    	for (Task t : tasks) {
+    		taskRepository.save(t);
+    	}
     }
 
-    @Override
-    public void removeTaskByOrderIndex(Integer orderIndex) {
-        taskRepository.removeTaskByOrderIndex(orderIndex);
+    @Transactional
+    public void removeTaskByOrderIndex(Long id) {
+        taskRepository.deleteById(id);
     }
 
 }

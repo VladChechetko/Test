@@ -3,29 +3,39 @@ package ru.volnenko.se.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.UUID;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  * @author Denis Volnenko
  */
+@Entity
+public class Task implements Serializable {
 
-public final class Task implements Serializable {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    private String id = UUID.randomUUID().toString();
+	@ManyToOne
+	@JoinColumn(name = "PROJECT_ID")
+	private Project project;
 
-    private String projectId;
-
-    private String name = "";
+	private String name = "";
 
     private Date dateBegin;
 
     private Date dateEnd;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -53,12 +63,12 @@ public final class Task implements Serializable {
         this.dateEnd = dateEnd;
     }
 
-    public String getProjectId() {
-        return projectId;
-    }
+    public Project getProject() {
+		return project;
+	}
 
-    public void setProjectId(String projectId) {
-        this.projectId = projectId;
-    }
+	public void setProject(Project project) {
+		this.project = project;
+	}
 
 }
